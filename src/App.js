@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TopBar from './components/TopBar';
 import Sidebar from './components/Sidebar';
+import { getTemplates } from './api/request';
 
 export default function App() {
   const [pages, setPages] = useState([
     { id: 1, content: '<p>Start typing your report here...</p>' }
   ]);
   const [currentPage, setCurrentPage] = useState(1);
-
+  
   const handlePageContent = (content, id) => {
     setPages(pages.map(page => (page.id === id ? { ...page, content } : page)));
   };
@@ -19,6 +20,14 @@ export default function App() {
     };
     setPages([...pages, newPage]);
   };
+
+  useEffect(() => {
+    const fetchDetails = async() => {
+      const res = await getTemplates();
+      console.log(res.data)
+    } 
+    fetchDetails();
+  }, [])
 
   return (
     <div className="flex h-screen bg-gray-100">
